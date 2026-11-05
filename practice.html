@@ -24,7 +24,7 @@ function render(){var it=items[i],done=it.pick!==null;
  var h='<div class="bar"><i style="width:'+(i/items.length*100)+'%"></i></div><div class="card" style="margin-top:14px"><span class="tag">'+TOPICS[t].n+'</span> <bdi dir="ltr" style="color:#5b6b7c;font-size:.85rem">'+(i+1)+' / '+items.length+'</bdi><div class="q en">'+it.q.q+'</div><div class="opts">';
  it.o.forEach(function(o,k){var c='opt';if(done){if(o===it.q.o[0])c+=' right';else if(k===it.pick)c+=' wrong'}h+='<button class="'+c+'" data-k="'+k+'"'+(done?' disabled':'')+'>'+o+'</button>'});
  h+='</div>';
- if(done){var ok=it.o[it.pick]===it.q.o[0];h+='<div class="fb '+(ok?'ok':'no')+'"><b>'+(ok?'أحسنت ✓':'الإجابة الصحيحة: ')+'</b>'+(ok?'':'<bdi dir="ltr">'+it.q.o[0]+'</bdi>')+'<div>'+L(it.q.e)+'</div></div>'+
+ if(done){var ok=it.o[it.pick]===it.q.o[0];h+='<div class="fb '+(ok?'ok':'no')+'"><b>'+(ok?'إجابة صحيحة ✓':'الإجابة الصحيحة: ')+'</b>'+(ok?'':'<bdi dir="ltr">'+it.q.o[0]+'</bdi>')+'<div>'+L(it.q.e)+'</div></div>'+
   '<div class="nav"><span></span><button class="btn" id="nx">'+(i===items.length-1?'النتيجة ✓':'التالي →')+'</button></div>'}
  app.innerHTML=h+'</div>';
  app.querySelectorAll('.opt').forEach(function(b){b.onclick=function(){it.pick=+b.dataset.k;if(it.o[it.pick]===it.q.o[0])right++;render()}});
@@ -33,7 +33,7 @@ function render(){var it=items[i],done=it.pick!==null;
 function end(){
  try{var b=JSON.parse(localStorage.getItem('stp.prac')||'{}');if(b[t]==null||right>b[t])b[t]=right;localStorage.setItem('stp.prac',JSON.stringify(b))}catch(e){}
  var all=right===items.length;
- app.innerHTML='<div class="card" style="text-align:center"><h2>'+(all?'ممتاز!':'نتيجتك')+'</h2><p style="font-size:1.4rem"><bdi dir="ltr">'+right+' / '+items.length+'</bdi></p><p>'+(all?'أتقنت هذا الموضوع.':'أعد المحاولة بعد مراجعة بطاقة القاعدة.')+'</p><a class="btn" href="?t='+t+'">إعادة التدريب</a> <a class="btn sec" href="practice.html">موضوع آخر</a></div>'}
+ app.innerHTML='<div class="card" style="text-align:center"><h2>'+(all?'أداء ممتاز':'نتيجتك')+'</h2><p style="font-size:1.4rem"><bdi dir="ltr">'+right+' / '+items.length+'</bdi></p><p>'+(all?'أظهرت إتقاناً لهذا الموضوع.':'يُنصح بمراجعة بطاقة القاعدة ثم إعادة المحاولة.')+'</p><a class="btn" href="?t='+t+'">إعادة التدريب</a> <a class="btn sec" href="practice.html">موضوع آخر</a></div>'}
 render();
 })();
-</script><script src="assets/ahmed-shell.js"></script></body></html>
+</script><script src="assets/ahmed-shell.js"></script><script src="assets/counter.js"></script></body></html>

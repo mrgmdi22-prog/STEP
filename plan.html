@@ -16,7 +16,7 @@ var L=function(t){return t.replace(/([A-Za-z][A-Za-z'’ \/\-\.]*[A-Za-z.'])/g,'
 var pct=function(a){return a[1]?Math.round(a[0]/a[1]*100):0};
 var R=0,T=0;Object.keys(res.skills).forEach(function(k){R+=res.skills[k][0];T+=res.skills[k][1]});
 var all=Math.round(R/T*100);
-var level=all<45?{n:'مستوى التأسيس',d:'تحتاج إلى بناء القواعد والمفردات الأساسية أولاً، ثم الانتقال إلى التدريب.'}:all<70?{n:'مستوى متوسط',d:'أساسك جيد، والتدريب المركّز على نقاط الضعف سيرفع نتيجتك بسرعة.'}:{n:'مستوى متقدم',d:'أنت جاهز للتدريب على أنماط ستيب والاختبارات التجريبية.'};
+var level=all<45?{n:'مستوى التأسيس',d:'يُنصح بتقوية القواعد والمفردات الأساسية أولاً، ثم الانتقال إلى التدريب.'}:all<70?{n:'مستوى متوسط',d:'أساسك جيد، والتدريب المركّز على المجالات الأضعف يرفع نتيجتك بصورة ملحوظة.'}:{n:'مستوى متقدم',d:'مستواك يؤهلك للانتقال إلى التدريب على أنماط الأسئلة والاختبارات التجريبية.'};
 var h='<section class="hero"><h1>نتيجتك: '+all+'%</h1><p><b>'+level.n+'</b><br>'+level.d+'</p></section>';
 h+='<div class="card"><h2>مهاراتك</h2>';
 var order=Object.keys(res.skills).sort(function(a,b){return pct(res.skills[a])-pct(res.skills[b])});
@@ -25,7 +25,7 @@ order.forEach(function(k){var p=pct(res.skills[k]);var c=p<50?'low':p<75?'mid':'
 h+='</div>';
 var weak=Object.keys(res.topics).filter(function(t){return res.topics[t][0]<res.topics[t][1]&&TOPICS[t]});
 h+='<div class="card" style="margin-top:12px"><h2>مواضع تحتاج مراجعة</h2>';
-if(!weak.length)h+='<p>لم تخطئ في أي موضوع، ممتاز! انتقل إلى التدريب المتقدم.</p>';
+if(!weak.length)h+='<p>لم تُسجَّل أخطاء في أي موضوع. يمكنك الانتقال إلى التدريب المتقدم.</p>';
 weak.forEach(function(t){var x=TOPICS[t];h+='<div class="rule"><b>'+x.n+'</b><div>'+L(x.r)+'</div>'+(x.e?'<div class="en" style="color:#5b6b7c;margin-top:4px">'+x.e+'</div>':'')+(PRAC[t]?'<div style="margin-top:6px"><a class="btn sec" style="padding:6px 16px;font-size:.9rem" href="practice.html?t='+t+'">تدرّب على هذا الموضوع</a></div>':'')+'</div>'});
 h+='</div>';
 var w1=SK[order[0]],w2=SK[order[1]]||w1;
@@ -38,8 +38,8 @@ var days=[['اليوم 1','راجع بطاقات القواعد أعلاه (10 �
 ['اليوم 7','أعد الاختبار التشخيصي وقارن نتيجتك بالأسبوع الماضي.']];
 h+='<div class="card" style="margin-top:12px"><h2>خطة سبعة أيام</h2>';
 days.forEach(function(d){h+='<div class="day"><span class="n">'+d[0]+'</span><span>'+d[1]+'</span></div>'});
-h+='</div><p class="note" style="margin-top:14px">تدريبات القواعد والمفردات متاحة من زر «تدرّب»، أو من <a href="practice.html">صفحة التدريب</a>. وتدريبات القراءة والاستماع قيد الإعداد.</p>';
+h+='</div><p class="note" style="margin-top:14px">تدريبات القواعد والمفردات متاحة من زر «تدرّب»، أو من <a href="practice.html">صفحة التدريب</a>. وسيُضاف التدريب على القراءة والاستماع قريباً.</p>';
 h+='<p style="text-align:center;margin-top:16px"><a class="btn sec" href="test.html">إعادة الاختبار</a></p>';
 app.innerHTML=h;
 })();
-</script><script src="assets/ahmed-shell.js"></script></body></html>
+</script><script src="assets/ahmed-shell.js"></script><script src="assets/counter.js"></script></body></html>

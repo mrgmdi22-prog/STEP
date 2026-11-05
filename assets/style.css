@@ -138,3 +138,8 @@ footer{text-align:center;color:var(--mut);font-size:.85rem;padding:24px 16px 36p
   .btn.big{width:100%}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* عدّاد الزوار */
+.visits{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:30px;padding:2px 16px;margin-bottom:10px;font-size:.9rem;color:var(--mut)}
+.visits b{color:var(--p);font-weight:800;margin-inline-start:4px}
+footer .visits{display:table;margin:0 auto 10px}
