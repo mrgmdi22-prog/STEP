@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>خطتي · منصة ستيب</title>
+<link rel="stylesheet" href="assets/style.css"></head><body>
+<header class="top"><a href="./">منصة ستيب</a><small>خطتي</small></header>
+<main class="wrap" id="app"></main>
+<footer>أ. أحمد آل سالم</footer>
+<script src="assets/data.js"></script>
+<script>
+(function(){
+var app=document.getElementById('app'),res=null;
+try{res=JSON.parse(localStorage.getItem('stp.result')||'null')}catch(e){}
+if(!res){app.innerHTML='<div class="card"><h2>لا توجد نتيجة بعد</h2><p>أجرِ الاختبار التشخيصي أولاً لتظهر خطتك.</p><a class="btn" href="test.html">ابدأ الاختبار</a></div>';return}
+var SK={grammar:'القواعد',vocab:'المفردات',reading:'القراءة',listening:'الاستماع'};
+var L=function(t){return t.replace(/([A-Za-z][A-Za-z'’ \/\-\.]*[A-Za-z.'])/g,'<bdi dir="ltr">$1</bdi>')};
+var pct=function(a){return a[1]?Math.round(a[0]/a[1]*100):0};
+var R=0,T=0;Object.keys(res.skills).forEach(function(k){R+=res.skills[k][0];T+=res.skills[k][1]});
+var all=Math.round(R/T*100);
+var level=all<45?{n:'مستوى التأسيس',d:'تحتاج إلى بناء القواعد والمفردات الأساسية أولاً، ثم الانتقال إلى التدريب.'}:all<70?{n:'مستوى متوسط',d:'أساسك جيد، والتدريب المركّز على نقاط الضعف سيرفع نتيجتك بسرعة.'}:{n:'مستوى متقدم',d:'أنت جاهز للتدريب على أنماط ستيب والاختبارات التجريبية.'};
+var h='<section class="hero"><h1>نتيجتك: '+all+'%</h1><p><b>'+level.n+'</b><br>'+level.d+'</p></section>';
+h+='<div class="card"><h2>مهاراتك</h2>';
+var order=Object.keys(res.skills).sort(function(a,b){return pct(res.skills[a])-pct(res.skills[b])});
+order.forEach(function(k){var p=pct(res.skills[k]);var c=p<50?'low':p<75?'mid':'high';
+ h+='<div class="skill"><div class="row"><span>'+SK[k]+'</span><span>'+res.skills[k][0]+' / '+res.skills[k][1]+' ('+p+'%)</span></div><div class="bar"><i class="'+c+'" style="width:'+p+'%"></i></div></div>'});
+h+='</div>';
+var weak=Object.keys(res.topics).filter(function(t){return res.topics[t][0]<res.topics[t][1]&&TOPICS[t]});
+h+='<div class="card" style="margin-top:12px"><h2>مواضع تحتاج مراجعة</h2>';
+if(!weak.length)h+='<p>لم تخطئ في أي موضوع، ممتاز! انتقل إلى التدريب المتقدم.</p>';
+weak.forEach(function(t){var x=TOPICS[t];h+='<div class="rule"><b>'+x.n+'</b><div>'+L(x.r)+'</div>'+(x.e?'<div class="en" style="color:#5b6b7c;margin-top:4px">'+x.e+'</div>':'')+'</div>'});
+h+='</div>';
+var w1=SK[order[0]],w2=SK[order[1]]||w1;
+var days=[['اليوم 1','راجع بطاقات القواعد أعلاه (10 دقائق) ثم أعد حل أسئلة ' +w1+' التي أخطأت فيها.'],
+['اليوم 2','تدريب على ' +w1+': 20 دقيقة مع كتابة سبب كل خطأ.'],
+['اليوم 3','تدريب على ' +w2+': 20 دقيقة.'],
+['اليوم 4','احفظ 10 مفردات جديدة داخل جمل، وراجع مفردات الأمس.'],
+['اليوم 5','قراءة نص قصير: حدّد الفكرة الرئيسة ثم الكلمات المفتاحية.'],
+['اليوم 6','استماع: استمع مرتين ثم أجب، ثم اقرأ النص وتحقق.'],
+['اليوم 7','أعد الاختبار التشخيصي وقارن نتيجتك بالأسبوع الماضي.']];
+h+='<div class="card" style="margin-top:12px"><h2>خطة سبعة أيام</h2>';
+days.forEach(function(d){h+='<div class="day"><span class="n">'+d[0]+'</span><span>'+d[1]+'</span></div>'});
+h+='</div><p class="note" style="margin-top:14px">التدريبات الموجّهة لكل موضوع قيد الإعداد وستُضاف قريباً.</p>';
+h+='<p style="text-align:center;margin-top:16px"><a class="btn sec" href="test.html">إعادة الاختبار</a></p>';
+app.innerHTML=h;
+})();
+</script></body></html>
