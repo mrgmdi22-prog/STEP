@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تدريب · منصة ستيب</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>.opt.right{border-color:var(--ok);background:var(--okl)}.opt.wrong{border-color:var(--bad);background:var(--badl)}.fb{margin-top:12px;padding:10px 14px;border-radius:12px}.fb.ok{background:var(--okl)}.fb.no{background:var(--badl)}</style></head><body>
+<header class="top"><a href="./">منصة ستيب</a><a href="plan.html" style="font-size:.9rem;font-weight:600">خطتي</a></header>
+<main class="wrap" id="app"></main>
+<footer>أ. أحمد آل سالم</footer>
+<script src="assets/data.js"></script><script src="assets/practice.js"></script>
+<script>
+(function(){
+var app=document.getElementById('app'),t=new URLSearchParams(location.search).get('t');
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var x=a[i];a[i]=a[j];a[j]=x}return a}
+var L=function(s){return s.replace(/([A-Za-z][A-Za-z'’ \/\-\.]*[A-Za-z.'])/g,'<bdi dir="ltr">$1</bdi>')};
+var res=null;try{res=JSON.parse(localStorage.getItem('stp.result')||'null')}catch(e){}
+if(!t||!PRAC[t]){
+ var h='<h2 style="margin:6px 0 12px">اختر موضوعاً للتدريب</h2><div class="grid two">';
+ var best={};try{best=JSON.parse(localStorage.getItem('stp.prac')||'{}')}catch(e){}
+ Object.keys(PRAC).forEach(function(k){var w=res&&res.topics[k]&&res.topics[k][0]<res.topics[k][1];
+  h+='<a class="card" style="text-decoration:none;color:inherit" href="?t='+k+'"><h3>'+TOPICS[k].n+'</h3><span class="tag'+(w?' soon':'')+'">'+(w?'يحتاج مراجعة':'تدريب')+'</span>'+(best[k]!=null?' <span class="tag">أفضل نتيجة '+best[k]+'/'+PRAC[k].length+'</span>':'')+'</a>'});
+ app.innerHTML=h+'</div>';return}
+var items=shuf(PRAC[t]).map(function(q){return{q:q,o:shuf(q.o),pick:null}}),i=0,right=0;
+function render(){var it=items[i],done=it.pick!==null;
+ var h='<div class="bar"><i style="width:'+(i/items.length*100)+'%"></i></div><div class="card" style="margin-top:14px"><span class="tag">'+TOPICS[t].n+'</span> <bdi dir="ltr" style="color:#5b6b7c;font-size:.85rem">'+(i+1)+' / '+items.length+'</bdi><div class="q en">'+it.q.q+'</div><div class="opts">';
+ it.o.forEach(function(o,k){var c='opt';if(done){if(o===it.q.o[0])c+=' right';else if(k===it.pick)c+=' wrong'}h+='<button class="'+c+'" data-k="'+k+'"'+(done?' disabled':'')+'>'+o+'</button>'});
+ h+='</div>';
+ if(done){var ok=it.o[it.pick]===it.q.o[0];h+='<div class="fb '+(ok?'ok':'no')+'"><b>'+(ok?'أحسنت ✓':'الإجابة الصحيحة: ')+'</b>'+(ok?'':'<bdi dir="ltr">'+it.q.o[0]+'</bdi>')+'<div>'+L(it.q.e)+'</div></div>'+
+  '<div class="nav"><span></span><button class="btn" id="nx">'+(i===items.length-1?'النتيجة ✓':'التالي →')+'</button></div>'}
+ app.innerHTML=h+'</div>';
+ app.querySelectorAll('.opt').forEach(function(b){b.onclick=function(){it.pick=+b.dataset.k;if(it.o[it.pick]===it.q.o[0])right++;render()}});
+ var nx=document.getElementById('nx');if(nx)nx.onclick=function(){if(i<items.length-1){i++;render()}else end()};
+}
+function end(){
+ try{var b=JSON.parse(localStorage.getItem('stp.prac')||'{}');if(b[t]==null||right>b[t])b[t]=right;localStorage.setItem('stp.prac',JSON.stringify(b))}catch(e){}
+ var all=right===items.length;
+ app.innerHTML='<div class="card" style="text-align:center"><h2>'+(all?'ممتاز!':'نتيجتك')+'</h2><p style="font-size:1.4rem"><bdi dir="ltr">'+right+' / '+items.length+'</bdi></p><p>'+(all?'أتقنت هذا الموضوع.':'أعد المحاولة بعد مراجعة بطاقة القاعدة.')+'</p><a class="btn" href="?t='+t+'">إعادة التدريب</a> <a class="btn sec" href="practice.html">موضوع آخر</a></div>'}
+render();
+})();
+</script></body></html>

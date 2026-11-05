@@ -5,7 +5,7 @@
 <header class="top"><a href="./">منصة ستيب</a><small>خطتي</small></header>
 <main class="wrap" id="app"></main>
 <footer>أ. أحمد آل سالم</footer>
-<script src="assets/data.js"></script>
+<script src="assets/data.js"></script><script src="assets/practice.js"></script>
 <script>
 (function(){
 var app=document.getElementById('app'),res=null;
@@ -26,7 +26,7 @@ h+='</div>';
 var weak=Object.keys(res.topics).filter(function(t){return res.topics[t][0]<res.topics[t][1]&&TOPICS[t]});
 h+='<div class="card" style="margin-top:12px"><h2>مواضع تحتاج مراجعة</h2>';
 if(!weak.length)h+='<p>لم تخطئ في أي موضوع، ممتاز! انتقل إلى التدريب المتقدم.</p>';
-weak.forEach(function(t){var x=TOPICS[t];h+='<div class="rule"><b>'+x.n+'</b><div>'+L(x.r)+'</div>'+(x.e?'<div class="en" style="color:#5b6b7c;margin-top:4px">'+x.e+'</div>':'')+'</div>'});
+weak.forEach(function(t){var x=TOPICS[t];h+='<div class="rule"><b>'+x.n+'</b><div>'+L(x.r)+'</div>'+(x.e?'<div class="en" style="color:#5b6b7c;margin-top:4px">'+x.e+'</div>':'')+(PRAC[t]?'<div style="margin-top:6px"><a class="btn sec" style="padding:6px 16px;font-size:.9rem" href="practice.html?t='+t+'">تدرّب على هذا الموضوع</a></div>':'')+'</div>'});
 h+='</div>';
 var w1=SK[order[0]],w2=SK[order[1]]||w1;
 var days=[['اليوم 1','راجع بطاقات القواعد أعلاه (10 دقائق) ثم أعد حل أسئلة ' +w1+' التي أخطأت فيها.'],
@@ -38,7 +38,7 @@ var days=[['اليوم 1','راجع بطاقات القواعد أعلاه (10 �
 ['اليوم 7','أعد الاختبار التشخيصي وقارن نتيجتك بالأسبوع الماضي.']];
 h+='<div class="card" style="margin-top:12px"><h2>خطة سبعة أيام</h2>';
 days.forEach(function(d){h+='<div class="day"><span class="n">'+d[0]+'</span><span>'+d[1]+'</span></div>'});
-h+='</div><p class="note" style="margin-top:14px">التدريبات الموجّهة لكل موضوع قيد الإعداد وستُضاف قريباً.</p>';
+h+='</div><p class="note" style="margin-top:14px">تدريبات القواعد والمفردات متاحة من زر «تدرّب»، أو من <a href="practice.html">صفحة التدريب</a>. وتدريبات القراءة والاستماع قيد الإعداد.</p>';
 h+='<p style="text-align:center;margin-top:16px"><a class="btn sec" href="test.html">إعادة الاختبار</a></p>';
 app.innerHTML=h;
 })();
