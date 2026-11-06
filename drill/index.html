@@ -92,6 +92,13 @@ section.block p.sub{color:var(--ink-soft);margin:0 0 14px;font-size:.95rem}
 .feedback.ok{background:var(--good-soft)}
 .feedback.no{background:var(--bad-soft)}
 .feedback b.v{display:block;font-size:1.05rem;margin-bottom:4px}
+.feedback .why{border-radius:10px;padding:10px 14px;margin-top:10px;font-size:1.08rem;line-height:1.8;background:#fff}
+.feedback .why b{display:block;margin-bottom:2px}
+.feedback .why.bad{border-inline-start:5px solid var(--bad)}
+.feedback .why.bad b{color:var(--bad)}
+.feedback .why.good{border-inline-start:5px solid var(--good)}
+.feedback .why.good b{color:var(--good)}
+.feedback .why .en{font-weight:600}
 .feedback .clue{background:var(--sun);border-radius:8px;padding:8px 12px;margin-top:8px}
 details.rule{margin-top:10px;background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:8px 14px}
 details.rule summary{cursor:pointer;font-weight:600;color:var(--accent)}
@@ -134,6 +141,7 @@ footer{margin-top:40px;font-size:.8rem;color:var(--ink-soft);text-align:center;l
 
 <script src="data.js"></script>
 <script src="listening.js"></script>
+<script src="explain.js"></script>
 <script>
 const D = window.STEP_DATA;
 const CATS = {
@@ -403,9 +411,19 @@ function renderQ(){
   let fb = '';
   if(showFeedback){
     const ok = picked===q.answer;
-    fb = `<div class="feedback ${ok?'ok':'no'}"><b class="v">${ok?'إجابة صحيحة.':'الإجابة الصحيحة: '+letters[q.answer]}</b>
-      ${!ok?`<div class="en" style="font-size:1.05rem">${esc(q.options[q.answer])}</div>`:''}
-      ${q.hint?`<div class="clue">${esc(q.hint)}</div>`:''}</div>${ruleBox(q)}`;
+    const W = (window.STEP_WHY||{})[q.key];
+    const goodWhy = (W && W[0]) || q.hint || '';
+    const badWhy = (!ok && W && W[1] && W[1][picked]) || '';
+    const L = letters;
+    let body = '';
+    if(ok){
+      body = goodWhy ? `<div class="why good"><b>لماذا هي صحيحة؟</b>${esc(goodWhy)}</div>` : '';
+    } else {
+      body = `<div class="why bad"><b>لماذا اختيارك (${L[picked]}) خطأ؟</b><span class="en">${esc(q.options[picked])}</span><br>${badWhy?esc(badWhy):'هذا الخيار لا يناسب الجملة هنا؛ راجع القاعدة في الأسفل ثم أعد قراءة الجملة مع كل خيار.'}</div>
+        <div class="why good"><b>لماذا (${L[q.answer]}) هي الصحيحة؟</b><span class="en">${esc(q.options[q.answer])}</span><br>${goodWhy?esc(goodWhy):'راجع القاعدة في الأسفل: هي التي تفسّر هذا الاختيار.'}</div>`;
+    }
+    const needRule = !ok && !(badWhy && goodWhy);
+    fb = `<div class="feedback ${ok?'ok':'no'}"><b class="v">${ok?'إجابة صحيحة.':'الإجابة الصحيحة: '+L[q.answer]}</b>${body}</div>${needRule?ruleBox(q).replace('<details class="rule">','<details class="rule" open>'):ruleBox(q)}`;
   } else if(q.kind==='r' && !S.mock){ fb = ''; }
   const hot = q.freq>=3 ? `<span class="chip hot">متكرر في ${q.freq} نماذج</span>` : '';
   const catChip = `<span class="chip">${q.kind==='r'?RTYPES[q.rtype]:q.kind==='w'?'معنى الكلمة':q.kind==='l'?'الاستماع':CATS[q.cat]}</span>`;
