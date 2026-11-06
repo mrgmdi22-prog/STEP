@@ -352,9 +352,7 @@ function home(){
   <section class="block"><h2>استيعاب المقروء</h2><p class="sub">قطعة كاملة وأسئلتها، مع ترجمة عربية للسؤال عند الحاجة.</p>
     <div class="cats">${catTile('r_all', RQ.length, 'كل القطع بالترتيب')}${Object.keys(RTYPES).filter(t=>rcount(t)>2).map(t=>catTile('r_'+t, rcount(t), RTYPES[t])).join('')}</div></section>
   <section class="block"><h2>مفردات القراءة المتكررة</h2><p class="sub">كلمات يتكرر السؤال عن معناها في قطع ستيب: اختر المعنى الأقرب، وتظهر لك ترجمتها العربية بعد الإجابة.</p>
-    <div class="cats">${catTile('words', WB.length, 'معنى الكلمة')}</div></section>
-  <p class="note">🏆 كل سؤال تجيبه صحيحاً = <b>7 نقاط</b> في لوحة الشرف (مرة واحدة لكل سؤال)، وتتضاعف مع التسلسل 🔥: ثلاث صحيحة متتالية ×1.5، وخمس فأكثر ×2. أسئلة الاستماع من تأليفنا، والصوت يقرؤه جهازك. إن لاحظت سؤالاً فيه خطأ فأخبر معلمك.</p>
-  <footer>إعداد: أ. أحمد آل سالم — الأسئلة مجمّعة من نماذج ستيب المتداولة (تجميعات د. برق وأكاديمية ستيب المجانية)، وأُعيد تنظيمها وتصنيفها للتدريب.</footer>`;
+    <div class="cats">${catTile('words', WB.length, 'معنى الكلمة')}</div></section>`;
   app.querySelectorAll('.cat').forEach(b=>b.onclick=()=>startCat(b.dataset.cat));
   $('#mock').onclick = startMock;
   $('#hot').onclick = ()=>startSession('الأسئلة الأكثر تكراراً', shuffle(G.filter(q=>q.freq>=3)));
