@@ -1,4 +1,4 @@
-// بنك الاختبار التشخيصي: أسئلة أصلية من تأليف أ. أحمد آل سالم. a = الإجابة الصحيحة (الأولى في القائمة وتُخلط عند العرض)
+// بنك الاختبار التشخيصي: أسئلة أصلية من تأليف أ. أحمد بن سالم. a = الإجابة الصحيحة (الأولى في القائمة وتُخلط عند العرض)
 window.DIAG = {
  grammar: [
   {t:'tense', q:'By the time we arrived, the movie ____.', o:['had already started','already started','has already started','was already starting']},
